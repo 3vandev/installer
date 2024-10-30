@@ -21,124 +21,133 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package io.github.solclient.installer.ui;
 
 import java.awt.Font;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 import io.github.solclient.installer.Installer;
 import io.github.solclient.installer.locale.Locale;
-import io.github.solclient.installer.ui.step.*;
-import io.github.solclient.installer.ui.step.impl.*;
+import io.github.solclient.installer.ui.step.Step;
+import io.github.solclient.installer.ui.step.StepContent;
+import io.github.solclient.installer.ui.step.StepManager;
+import io.github.solclient.installer.ui.step.impl.ChooseLauncherStep;
+import io.github.solclient.installer.ui.step.impl.CustomiseStep;
+import io.github.solclient.installer.ui.step.impl.InstallLocationStep;
+import io.github.solclient.installer.ui.step.impl.InstallStep;
 
 public class InstallerFrame extends JFrame {
 
-	private static final long serialVersionUID = 1L;
-	public static final int WIDTH = 500, HEIGHT = 300;
+    private static final long serialVersionUID = 1L;
+    public static final int WIDTH = 500, HEIGHT = 300;
 
-	private final Installer installer = new Installer();
-	private final JButton previous;
-	private final JButton next;
-	private final StepManager<JPanel> steps;
-	private int launcherType;
-	private Runnable nextAction;
+    private final Installer installer = new Installer();
+    private final JButton previous;
+    private final JButton next;
+    private final StepManager<JPanel> steps;
+    private int launcherType;
+    private Runnable nextAction;
 
-	public InstallerFrame() {
-		steps = new StepManager<JPanel>(new Step[] { new Step<>(() -> new ChooseLauncherStep(this), false),
-				new Step<>(() -> new InstallLocationStep(this), true),
-				new Step<>(() -> new CustomiseStep(this), true), new Step<>(() -> new InstallStep(this), true) });
+    public InstallerFrame() {
+        steps = new StepManager<JPanel>(new Step[]{new Step<>(() -> new ChooseLauncherStep(this), false),
+            new Step<>(() -> new InstallLocationStep(this), true),
+            new Step<>(() -> new CustomiseStep(this), true), new Step<>(() -> new InstallStep(this), true)});
 
-		setSize(WIDTH, HEIGHT);
-		setResizable(false);
-		setLayout(null);
-		setIconImage(new ImageIcon(getClass().getResource("/logo.png")).getImage());
+        setSize(WIDTH, HEIGHT);
+        setResizable(false);
+        setLayout(null);
+        setIconImage(new ImageIcon(getClass().getResource("/logo.png")).getImage());
 
-		JLabel title = new JLabel("Sol Client");
-		title.setHorizontalAlignment(SwingConstants.CENTER);
-		title.setFont(title.getFont().deriveFont(Font.BOLD, 40F));
-		title.setBounds(0, 15, WIDTH, 40);
-		add(title);
+        JLabel title = new JLabel("Skylite Installer");
+        title.setHorizontalAlignment(SwingConstants.CENTER);
+        title.setFont(title.getFont().deriveFont(Font.BOLD, 40F));
+        title.setBounds(0, 15, WIDTH, 40);
+        add(title);
 
-		previous = new JButton(Locale.get(Locale.UI_BACK));
-		previous.setBounds(20, HEIGHT - 80, 100, 30);
-		previous.addActionListener((event) -> previous());
-		add(previous);
+        previous = new JButton(Locale.get(Locale.UI_BACK));
+        previous.setBounds(20, HEIGHT - 80, 100, 30);
+        previous.addActionListener((event) -> previous());
+        add(previous);
 
-		next = new JButton(Locale.get(Locale.UI_NEXT));
-		next.setBounds(WIDTH - 120, HEIGHT - 80, 100, 30);
-		next.addActionListener((event) -> {
-			nextAction.run();
-			nextAction = () -> {
-			};
-			next();
-		});
-		add(next);
+        next = new JButton(Locale.get(Locale.UI_NEXT));
+        next.setBounds(WIDTH - 120, HEIGHT - 80, 100, 30);
+        next.addActionListener((event) -> {
+            nextAction.run();
+            nextAction = () -> {
+            };
+            next();
+        });
+        add(next);
 
-		setStep(null, steps.current());
-	}
+        setStep(null, steps.current());
+    }
 
-	@Override
-	public String getTitle() {
-		return Locale.get(Locale.UI_TITLE);
-	}
+    @Override
+    public String getTitle() {
+        return Locale.get(Locale.UI_TITLE);
+    }
 
-	public void setInstallerType(int launcher) {
-		this.launcherType = launcher;
-	}
+    public void setInstallerType(int launcher) {
+        this.launcherType = launcher;
+    }
 
-	public int getInstallerType() {
-		return launcherType;
-	}
+    public int getInstallerType() {
+        return launcherType;
+    }
 
-	public Installer getInstaller() {
-		return this.installer;
-	}
+    public Installer getInstaller() {
+        return this.installer;
+    }
 
-	public void setNextButtonAction(Runnable r) {
-		this.nextAction = r;
-	}
+    public void setNextButtonAction(Runnable r) {
+        this.nextAction = r;
+    }
 
-	public void enableNextButton(boolean enabled) {
-		previous.setEnabled(enabled);
-		next.setEnabled(enabled);
-	}
+    public void enableNextButton(boolean enabled) {
+        previous.setEnabled(enabled);
+        next.setEnabled(enabled);
+    }
 
-	private void setStep(StepContent<JPanel> previousStep, StepContent<JPanel> step) {
-		if (previousStep != null) {
-			remove(previousStep.getContent());
-		}
-		add(step.getContent());
-		previous.setVisible(steps.hasLess());
-		step.getContent().setBounds(0, 50, getWidth(), HEIGHT - 130);
-		step.getContent().updateUI();
-		this.repaint();
-		next.setVisible(step.getStep().isNextShown());
-	}
+    private void setStep(StepContent<JPanel> previousStep, StepContent<JPanel> step) {
+        if (previousStep != null) {
+            remove(previousStep.getContent());
+        }
+        add(step.getContent());
+        previous.setVisible(steps.hasLess());
+        step.getContent().setBounds(0, 50, getWidth(), HEIGHT - 130);
+        step.getContent().updateUI();
+        this.repaint();
+        next.setVisible(step.getStep().isNextShown());
+    }
 
-	public void previous() {
-		enableNextButton(true);
+    public void previous() {
+        enableNextButton(true);
 
-		if (steps.hasLess()) {
-			setStep(steps.current(), steps.goBackwards());
-			next.setText(Locale.get(Locale.UI_NEXT));
-		}
-	}
+        if (steps.hasLess()) {
+            setStep(steps.current(), steps.goBackwards());
+            next.setText(Locale.get(Locale.UI_NEXT));
+        }
+    }
 
-	public void next() {
-		enableNextButton(true);
+    public void next() {
+        enableNextButton(true);
 
-		if (steps.hasMore()) {
-			setStep(steps.current(), steps.goForwards());
+        if (steps.hasMore()) {
+            setStep(steps.current(), steps.goForwards());
 
-			if (!steps.hasMore()) {
-				next.setText(Locale.get(Locale.UI_FINISH));
-			}
-			return;
-		}
+            if (!steps.hasMore()) {
+                next.setText(Locale.get(Locale.UI_FINISH));
+            }
+            return;
+        }
 
-		System.exit(0);
-	}
+        System.exit(0);
+    }
 
 }
