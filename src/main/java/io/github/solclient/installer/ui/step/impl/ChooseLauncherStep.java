@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package io.github.solclient.installer.ui.step.impl;
 
 import javax.swing.*;
@@ -33,40 +32,40 @@ import io.github.solclient.installer.ui.step.Step;
 
 public class ChooseLauncherStep extends JPanel {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public ChooseLauncherStep(InstallerFrame frame) {
-		setLayout(null);
-		JLabel instruction = new JLabel(Locale.get(Locale.UI_SELECT_LAUNCHER));
-		instruction.setHorizontalAlignment(SwingConstants.CENTER);
-		instruction.setFont(instruction.getFont().deriveFont(20F));
-		instruction.setBounds(0, 40, InstallerFrame.WIDTH, 40);
-		add(instruction);
+    public ChooseLauncherStep(InstallerFrame frame) {
+        setLayout(null);
+        JLabel instruction = new JLabel(Locale.get(Locale.UI_SELECT_LAUNCHER));
+        instruction.setHorizontalAlignment(SwingConstants.CENTER);
+        instruction.setFont(instruction.getFont().deriveFont(20F));
+        instruction.setBounds(0, 40, InstallerFrame.WIDTH, 40);
+        add(instruction);
 
-		JButton installMinecraft = new JButton("Mojang");
-		installMinecraft.setBounds(80, 90, 100, 30);
-		add(installMinecraft);
-		installMinecraft.addActionListener((event) -> {
-			frame.setInstallerType(Launcher.MOJANG);
-			frame.next();
-		});
+        JButton installMinecraft = new JButton("Mojang");
+        installMinecraft.setBounds(80, 90, 100, 30);
+        add(installMinecraft);
+        installMinecraft.addActionListener((event) -> {
+            frame.setInstallerType(Launcher.MOJANG);
+            frame.next();
+        });
 
-		JButton installMultiMC = new JButton("MultiMC");
-		installMultiMC.setBounds(200, 90, 100, 30);
-		add(installMultiMC);
-		installMultiMC.addActionListener((event) -> {
-			frame.setInstallerType(Launcher.MULTIMC);
-			frame.next();
-		});
+        JButton installMultiMC = new JButton("MultiMC");
+        installMultiMC.setBounds(200, 90, 100, 30);
+        add(installMultiMC);
+        installMultiMC.addActionListener((event) -> {
+            frame.setInstallerType(Launcher.MULTIMC);
+            frame.next();
+        });
 
-		JButton installPrism = new JButton("Prism");
-		installPrism.setBounds(320, 90, 100, 30);
-		installPrism.setToolTipText("Prism Launcher");
-		add(installPrism);
-		installPrism.addActionListener((event) -> {
-			frame.setInstallerType(Launcher.PRISM);
-			frame.next();
-		});
-	}
+        JButton installPrism = new JButton("Prism");
+        installPrism.setBounds(320, 90, 100, 30);
+        installPrism.setToolTipText("Prism Launcher");
+        add(installPrism);
+        installPrism.addActionListener((event) -> {
+            frame.setInstallerType(Launcher.PRISM);
+            frame.next();
+        });
+    }
 
 }

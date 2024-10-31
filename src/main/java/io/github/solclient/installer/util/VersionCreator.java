@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package io.github.solclient.installer.util;
 
 import java.io.*;
@@ -30,28 +29,28 @@ import io.github.solclient.installer.InstallStatusCallback;
 
 public interface VersionCreator {
 
-	boolean load(InstallStatusCallback cb) throws IOException;
+    boolean load(InstallStatusCallback cb) throws IOException;
 
-	void addProperty(String property, String name);
+    void addProperty(String property, String name);
 
-	void addGameArguments(String... arguments);
+    void addGameArguments(String... arguments);
 
-	void putLibrary(File origin, String mavenName) throws IOException;
+    void putLibrary(File origin, String mavenName) throws IOException;
 
-	void removeLibrary(String mavenName);
+    void removeLibrary(String mavenName);
 
-	boolean putFullLibrary(String url, String mavenName, InstallStatusCallback cb) throws IOException;
+    boolean putFullLibrary(String url, String mavenName, InstallStatusCallback cb) throws IOException;
 
-	File getSourceClient();
+    File getSourceClient();
 
-	File getTargetClient();
+    File getTargetClient();
 
-	String getTargetName();
+    String getTargetName();
 
-	void computeTargetClient() throws IOException;
+    void computeTargetClient() throws IOException;
 
-	void save(String mainClass) throws IOException;
+    void save(String mainClass) throws IOException;
 
-	void setTweakerClass(String tweakerClass);
+    void setTweakerClass(String tweakerClass);
 
 }

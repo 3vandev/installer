@@ -21,33 +21,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package io.github.solclient.installer;
 
 public interface InstallStatusCallback {
 
-	void setTextStatus(String status);
+    void setTextStatus(String status);
 
-	default void setTextStatus(String status, Throwable error) {
-		setTextStatus(status + ":");
-		setTextStatus(error.toString());
-		setTextStatus(error.getStackTrace());
-		while ((error = error.getCause()) != null) {
-			setTextStatus("Caused by " + error);
-			setTextStatus(error.getStackTrace());
-		}
-	}
+    default void setTextStatus(String status, Throwable error) {
+        setTextStatus(status + ":");
+        setTextStatus(error.toString());
+        setTextStatus(error.getStackTrace());
+        while ((error = error.getCause()) != null) {
+            setTextStatus("Caused by " + error);
+            setTextStatus(error.getStackTrace());
+        }
+    }
 
-	default void setTextStatus(StackTraceElement[] elements) {
-		for (StackTraceElement element : elements) {
-			setTextStatus("        at " + element.toString());
-		}
-	}
+    default void setTextStatus(StackTraceElement[] elements) {
+        for (StackTraceElement element : elements) {
+            setTextStatus("        at " + element.toString());
+        }
+    }
 
-	void setProgressBarValues(int max, int cur);
+    void setProgressBarValues(int max, int cur);
 
-	void setProgressBarIndeterminate(boolean indeterminate);
+    void setProgressBarIndeterminate(boolean indeterminate);
 
-	void onDone(boolean ok);
+    void onDone(boolean ok);
 
 }

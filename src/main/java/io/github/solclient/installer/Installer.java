@@ -106,10 +106,10 @@ public final class Installer {
                     creator = new MCVersionCreator(data, cacheFolder, name);
                     break;
                 case Launcher.MULTIMC:
-                    creator = new MultiMCVersionCreator(data, cacheFolder, name, "sol-client");
+                    creator = new MultiMCVersionCreator(data, cacheFolder, name, "skylite-client");
                     break;
                 case Launcher.PRISM:
-                    creator = new PrismVersionCreator(data, cacheFolder, name, "sol-client");
+                    creator = new PrismVersionCreator(data, cacheFolder, name, "skylite-client");
                     break;
             }
 
@@ -129,8 +129,8 @@ public final class Installer {
 
         cacheFolder.deleteOnExit();
 
-        String gameJarUrl = latest.getGameJar();
-        File clientJar = new File(cacheFolder, "sol-client.jar");
+        //String gameJarUrl = latest.getGameJar();
+        //File clientJar = new File(cacheFolder, "sol-client.jar");
         File optifineJar = new File(cacheFolder, "optifine.jar");
         File optifineJarMod = new File(cacheFolder, "optifine-mod.jar");
         File patchedJar = new File(cacheFolder, "patched.jar");
@@ -141,8 +141,8 @@ public final class Installer {
             callback.setProgressBarIndeterminate(false);
             callback.setTextStatus(Locale.get(Locale.MSG_DOWNLOADING_CLIENT));
 
-            Utils.downloadFileMonitored(clientJar, new URL(gameJarUrl), callback);
-            creator.putLibrary(clientJar, "io.github.solclient:client:" + latest.getId());
+            //Utils.downloadFileMonitored(clientJar, new URL(gameJarUrl), callback);
+            //creator.putLibrary(clientJar, "io.github.solclient:client:" + latest.getId());
 
             if (enableOptifine) {
                 callback.setTextStatus(Locale.get(Locale.MSG_DOWNLOADING_GENERIC, "OptiFine"));
@@ -311,7 +311,7 @@ public final class Installer {
                 newProfile.put("icon", "data:image/png;base64,"
                         + Base64.getEncoder().encodeToString(IOUtils.resourceToByteArray("/logo_128x.png")));
 
-                profiles.put("sol-client", newProfile);
+                profiles.put("skylite-client", newProfile);
 
                 FileUtils.writeStringToFile(launcherProfiles, profilesData.toString(), StandardCharsets.UTF_8);
 

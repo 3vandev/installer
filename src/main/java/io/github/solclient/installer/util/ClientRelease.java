@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package io.github.solclient.installer.util;
 
 import java.io.IOException;
@@ -31,41 +30,41 @@ import io.toadlabs.jfgjds.data.*;
 
 public final class ClientRelease {
 
-	private String id, gameJar;
+    private String id, gameJar;
 
-	public static ClientRelease parse(JsonObject obj) {
-		ClientRelease rel = new ClientRelease();
-		rel.id = obj.get("name").getStringValue();
-		JsonObject gameAsset = null;
+    public static ClientRelease parse(JsonObject obj) {
+        ClientRelease rel = new ClientRelease();
+        rel.id = obj.get("name").getStringValue();
+        JsonObject gameAsset = null;
 
-		for (JsonValue assetObj : obj.get("assets").asArray()) {
-			JsonObject asset = assetObj.asObject();
-			if (asset.get("name").getStringValue().equals("game.jar")) {
-				gameAsset = asset;
-				break;
-			}
-		}
+        for (JsonValue assetObj : obj.get("assets").asArray()) {
+            JsonObject asset = assetObj.asObject();
+            if (asset.get("name").getStringValue().equals("game.jar")) {
+                gameAsset = asset;
+                break;
+            }
+        }
 
-		if (gameAsset == null) {
-			throw new IllegalArgumentException("No game.jar found for version " + rel.id);
-		}
+        if (gameAsset == null) {
+            throw new IllegalArgumentException("No game.jar found for version " + rel.id);
+        }
 
-		rel.gameJar = gameAsset.get("browser_download_url").getStringValue();
+        rel.gameJar = gameAsset.get("browser_download_url").getStringValue();
 
-		return rel;
-	}
+        return rel;
+    }
 
-	public String getId() {
-		return id;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public String getGameJar() {
-		return gameJar;
-	}
+    public String getGameJar() {
+        return gameJar;
+    }
 
-	public static ClientRelease latest() throws IOException {
-		return parse(Utils.json(new URL(System.getProperty("io.github.solclient.client.install.api",
-				"https://api.github.com/repos/TheKodeToad/Sol-Client/releases/latest"))));
-	}
+    public static ClientRelease latest() throws IOException {
+        return parse(Utils.json(new URL(System.getProperty("io.github.solclient.client.install.api",
+                "https://api.github.com/repos/TheKodeToad/Sol-Client/releases/latest"))));
+    }
 
 }

@@ -21,27 +21,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package io.github.solclient.installer.ui.step;
 
 import java.util.function.Supplier;
 
 public final class Step<T> {
 
-	private final Supplier<T> supplier;
-	private final boolean nextShown;
+    private final Supplier<T> supplier;
+    private final boolean nextShown;
 
-	public Step(Supplier<T> supplier, boolean nextShown) {
-		this.supplier = supplier;
-		this.nextShown = nextShown;
-	}
+    public Step(Supplier<T> supplier, boolean nextShown) {
+        this.supplier = supplier;
+        this.nextShown = nextShown;
+    }
 
-	public StepContent<T> createContent() {
-		return new StepContent<>(this, supplier.get());
-	}
+    public StepContent<T> createContent() {
+        return new StepContent<>(this, supplier.get());
+    }
 
-	public boolean isNextShown() {
-		return nextShown;
-	}
+    public boolean isNextShown() {
+        return nextShown;
+    }
 
 }

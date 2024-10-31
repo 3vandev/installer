@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package io.github.solclient.installer.ui.step.impl;
 
 import java.awt.event.*;
@@ -38,69 +37,69 @@ import io.github.solclient.installer.ui.InstallerFrame;
 
 public class InstallLocationStep extends JPanel {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public InstallLocationStep(InstallerFrame frame) {
-		setLayout(null);
-		JLabel instruction = new JLabel(Locale.get(Locale.UI_INSTALL_LOCATION));
-		instruction.setHorizontalAlignment(SwingConstants.CENTER);
-		instruction.setFont(instruction.getFont().deriveFont(20F));
-		instruction.setBounds(0, 40, InstallerFrame.WIDTH, 40);
-		add(instruction);
+    public InstallLocationStep(InstallerFrame frame) {
+        setLayout(null);
+        JLabel instruction = new JLabel(Locale.get(Locale.UI_INSTALL_LOCATION));
+        instruction.setHorizontalAlignment(SwingConstants.CENTER);
+        instruction.setFont(instruction.getFont().deriveFont(20F));
+        instruction.setBounds(0, 40, InstallerFrame.WIDTH, 40);
+        add(instruction);
 
-		JTextField installationLocation = new JTextField(
-				Launcher.getDefaultLocation(Launcher.getLocationsForLauncher(frame.getInstallerType())).toString());
-		installationLocation.setBounds(InstallerFrame.WIDTH / 2 - 100, 90, 170, 30);
-		add(installationLocation);
-		installationLocation.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent event) {
-				File file = getFile(installationLocation);
-				SwingUtilities.invokeLater(() -> installationLocation.putClientProperty("JComponent.outline",
-						!file.canRead() || !file.canWrite() ? "error" : null));
-			}
+        JTextField installationLocation = new JTextField(
+                Launcher.getDefaultLocation(Launcher.getLocationsForLauncher(frame.getInstallerType())).toString());
+        installationLocation.setBounds(InstallerFrame.WIDTH / 2 - 100, 90, 170, 30);
+        add(installationLocation);
+        installationLocation.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent event) {
+                File file = getFile(installationLocation);
+                SwingUtilities.invokeLater(() -> installationLocation.putClientProperty("JComponent.outline",
+                        !file.canRead() || !file.canWrite() ? "error" : null));
+            }
 
-		});
-		JButton installationLocationPicker = new JButton();
-		installationLocationPicker.setBounds(InstallerFrame.WIDTH / 2 + 70, 90, 30, 30);
-		installationLocationPicker.setIcon(new FlatFileViewDirectoryIcon());
-		add(installationLocationPicker);
-		installationLocationPicker.addActionListener(evt -> {
-			JFileChooser chooser = new JFileChooser(getFile(installationLocation));
-			chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-			chooser.setFileFilter(new FileFilter() {
-				@Override
-				public boolean accept(File input) {
-					return input.isDirectory() && input.canWrite() && input.canRead();
-				}
+        });
+        JButton installationLocationPicker = new JButton();
+        installationLocationPicker.setBounds(InstallerFrame.WIDTH / 2 + 70, 90, 30, 30);
+        installationLocationPicker.setIcon(new FlatFileViewDirectoryIcon());
+        add(installationLocationPicker);
+        installationLocationPicker.addActionListener(evt -> {
+            JFileChooser chooser = new JFileChooser(getFile(installationLocation));
+            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            chooser.setFileFilter(new FileFilter() {
+                @Override
+                public boolean accept(File input) {
+                    return input.isDirectory() && input.canWrite() && input.canRead();
+                }
 
-				@Override
-				public String getDescription() {
-					return Locale.get(Locale.UI_ACCESSIBLE_DIRECTORIES);
-				}
-			});
-			chooser.setAcceptAllFileFilterUsed(false);
-			chooser.setMultiSelectionEnabled(false);
-			chooser.setDialogTitle(Locale.get(Locale.UI_SELECT_GAMEDIR));
-			chooser.setApproveButtonText(Locale.get(Locale.UI_SELECT));
-			if (chooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION) {
-				File selected = chooser.getSelectedFile();
-				installationLocation.setText(selected.getAbsolutePath());
-			}
-		});
-		frame.setNextButtonAction(() -> {
-			File file = getFile(installationLocation);
-			if (!file.canRead() || !file.canWrite()) { // <- thy return false when the file doesn't exist
-				JOptionPane.showMessageDialog(frame, Locale.get(Locale.UI_NO_GAMEDIR), Locale.get(Locale.UI_OH_DEAR),
-						JOptionPane.ERROR_MESSAGE);
-				return;
-			}
-			frame.getInstaller().setPath(file);
-		});
-	}
+                @Override
+                public String getDescription() {
+                    return Locale.get(Locale.UI_ACCESSIBLE_DIRECTORIES);
+                }
+            });
+            chooser.setAcceptAllFileFilterUsed(false);
+            chooser.setMultiSelectionEnabled(false);
+            chooser.setDialogTitle(Locale.get(Locale.UI_SELECT_GAMEDIR));
+            chooser.setApproveButtonText(Locale.get(Locale.UI_SELECT));
+            if (chooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION) {
+                File selected = chooser.getSelectedFile();
+                installationLocation.setText(selected.getAbsolutePath());
+            }
+        });
+        frame.setNextButtonAction(() -> {
+            File file = getFile(installationLocation);
+            if (!file.canRead() || !file.canWrite()) { // <- thy return false when the file doesn't exist
+                JOptionPane.showMessageDialog(frame, Locale.get(Locale.UI_NO_GAMEDIR), Locale.get(Locale.UI_OH_DEAR),
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            frame.getInstaller().setPath(file);
+        });
+    }
 
-	private static File getFile(JTextField field) {
-		return new File(field.getText());
-	}
+    private static File getFile(JTextField field) {
+        return new File(field.getText());
+    }
 
 }

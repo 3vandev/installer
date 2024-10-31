@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package io.github.solclient.installer.util;
 
 import java.io.File;
@@ -29,13 +28,13 @@ import java.io.File;
 // Yep. Just one change.
 public class PrismVersionCreator extends MultiMCVersionCreator {
 
-	public PrismVersionCreator(File gamedir, File tmpDir, String targetName, String targetId) {
-		super(gamedir, tmpDir, targetName, targetId);
-	}
+    public PrismVersionCreator(File gamedir, File tmpDir, String targetName, String targetId) {
+        super(gamedir, tmpDir, targetName, targetId);
+    }
 
-	@Override
-	public String getConfigFile() {
-		return "prismlauncher.cfg";
-	}
+    @Override
+    public String getConfigFile() {
+        return "prismlauncher.cfg";
+    }
 
 }

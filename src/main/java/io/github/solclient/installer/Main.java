@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package io.github.solclient.installer;
 
 import javax.swing.*;
@@ -34,25 +33,26 @@ import io.github.solclient.installer.util.*;
 
 public class Main {
 
-	public static void main(String[] args) {
-		System.setProperty("awt.useSystemAAFontSettings", "on");
-		Locale.setLocale(java.util.Locale.getDefault());
+    public static void main(String[] args) {
+        System.setProperty("awt.useSystemAAFontSettings", "on");
+        Locale.setLocale(java.util.Locale.getDefault());
 
-		if (OperatingSystem.current().isDarkMode())
-			FlatDarkLaf.setup();
-		else
-			FlatLightLaf.setup();
+        if (OperatingSystem.current().isDarkMode()) {
+            FlatDarkLaf.setup();
+        } else {
+            FlatLightLaf.setup();
+        }
 
-		if (!VersionCreatorUtils.SHA1Supported()) {
-			JOptionPane.showMessageDialog(null, Locale.get(Locale.UI_NO_SHA1), Locale.get(Locale.UI_ERROR),
-					JOptionPane.ERROR_MESSAGE);
-			return;
-		}
+        if (!VersionCreatorUtils.SHA1Supported()) {
+            JOptionPane.showMessageDialog(null, Locale.get(Locale.UI_NO_SHA1), Locale.get(Locale.UI_ERROR),
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-		InstallerFrame frame = new InstallerFrame();
-		frame.setLocationRelativeTo(null);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
-	}
+        InstallerFrame frame = new InstallerFrame();
+        frame.setLocationRelativeTo(null);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+    }
 
 }

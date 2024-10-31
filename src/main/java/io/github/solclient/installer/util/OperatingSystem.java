@@ -21,75 +21,78 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package io.github.solclient.installer.util;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 // TODO -> integers
 public enum OperatingSystem {
-	LINUX(""), // is the best
-	WINDOWS("AppData\\Roaming"), OSX("Library/Application Support");
+    LINUX(""), // is the best
+    WINDOWS("AppData\\Roaming"), OSX("Library/Application Support");
 
-	private File dataDir;
-	private static OperatingSystem current;
+    private File dataDir;
+    private static OperatingSystem current;
 
-	private OperatingSystem(String dataDir) {
-		this.dataDir = new File(System.getProperty("user.home"), dataDir);
-	}
+    private OperatingSystem(String dataDir) {
+        this.dataDir = new File(System.getProperty("user.home"), dataDir);
+    }
 
-	public File getDataDir() {
-		return dataDir;
-	}
+    public File getDataDir() {
+        return dataDir;
+    }
 
-	public boolean isDarkMode() {
-		try {
-			// based on https://github.com/JFormDesigner/FlatLaf/issues/204
-			switch (this) {
-				case LINUX:
-					String output = getProcessOutput("dbus-send", "--session", "--print-reply=literal",
-							"--dest=org.freedesktop.portal.Desktop", "/org/freedesktop/portal/desktop",
-							"org.freedesktop.portal.Settings.Read", "string:org.freedesktop.appearance",
-							"string:color-scheme").get(0);
-					output = output.substring(output.indexOf("uint32") + 7);
-					return output.equals("1");
-				case OSX:
-					return getProcessOutput("defaults", "read", "NSGlobalDomain", "AppleInterfaceStyle").get(0)
-							.equalsIgnoreCase("dark");
-				case WINDOWS:
-					return getProcessOutput("reg", "query",
-							"HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\\\Themes\\\\Personalize", "/v",
-							"AppsUseLightTheme").stream().anyMatch((line) -> line.contains("0x0"));
-			}
-		} catch (Throwable error) {
-		} // hacky but worth it
-		return false;
-	}
+    public boolean isDarkMode() {
+        try {
+            // based on https://github.com/JFormDesigner/FlatLaf/issues/204
+            switch (this) {
+                case LINUX:
+                    String output = getProcessOutput("dbus-send", "--session", "--print-reply=literal",
+                            "--dest=org.freedesktop.portal.Desktop", "/org/freedesktop/portal/desktop",
+                            "org.freedesktop.portal.Settings.Read", "string:org.freedesktop.appearance",
+                            "string:color-scheme").get(0);
+                    output = output.substring(output.indexOf("uint32") + 7);
+                    return output.equals("1");
+                case OSX:
+                    return getProcessOutput("defaults", "read", "NSGlobalDomain", "AppleInterfaceStyle").get(0)
+                            .equalsIgnoreCase("dark");
+                case WINDOWS:
+                    return getProcessOutput("reg", "query",
+                            "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\\\Themes\\\\Personalize", "/v",
+                            "AppsUseLightTheme").stream().anyMatch((line) -> line.contains("0x0"));
+            }
+        } catch (Throwable error) {
+        } // hacky but worth it
+        return false;
+    }
 
-	private static List<String> getProcessOutput(String... command) throws IOException {
-		Process process = new ProcessBuilder(command).start();
-		try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-			List<String> result = new ArrayList<>();
-			String line;
-			while ((line = reader.readLine()) != null) {
-				result.add(line);
-			}
-			return result;
-		}
-	}
+    private static List<String> getProcessOutput(String... command) throws IOException {
+        Process process = new ProcessBuilder(command).start();
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+            List<String> result = new ArrayList<>();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                result.add(line);
+            }
+            return result;
+        }
+    }
 
-	public static OperatingSystem current() {
-		if (current == null) {
-			String os = System.getProperty("os.name").toLowerCase();
-			if (os.contains("win")) {
-				return current = WINDOWS;
-			} else if (os.contains("mac")) {
-				return current = OSX;
-			}
-			return current = LINUX;
-		}
-		return current;
-	}
+    public static OperatingSystem current() {
+        if (current == null) {
+            String os = System.getProperty("os.name").toLowerCase();
+            if (os.contains("win")) {
+                return current = WINDOWS;
+            } else if (os.contains("mac")) {
+                return current = OSX;
+            }
+            return current = LINUX;
+        }
+        return current;
+    }
 
 }
